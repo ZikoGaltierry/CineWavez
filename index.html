@@ -1,211 +1,184 @@
 
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CineWave — Твой мир кино</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CineWave</title>
 <style>
- .search-box {
-  display: flex;
-  gap: 10px;
-  margin: 15px 0;
-}
-
-.search-box .search {
-  flex: 1;
-  width: auto;
-}
-
-.search-box button {
-  background: #e50914;
-  color: white;
-}
-
-@media(max-width:600px) {
-  .search-box {
-    width: 100%;
-  }
-}
 *{box-sizing:border-box}
 body{margin:0;background:#101010;color:white;font-family:Arial,sans-serif}
-header{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:#090909;position:sticky;top:0;z-index:5}
+header{height:70px;display:flex;align-items:center;padding:0 5%;background:#090909;position:sticky;top:0;z-index:5}
 .logo{font-size:27px;font-weight:bold;color:#e50914}
+nav{margin-left:auto}
 nav a{color:white;text-decoration:none;margin:0 12px}
 button{cursor:pointer;border:0;border-radius:5px;padding:11px 17px;font-weight:bold}
-.hero{padding:90px 7%;min-height:380px;background:linear-gradient(90deg,#111 20%,#111b),linear-gradient(135deg,#641019,#151515 70%)}
-.hero h1{font-size:48px;margin:10px 0}
-.hero p{max-width:500px;line-height:1.6;color:#ddd}
+.hero{padding:80px 7%;min-height:350px;background:linear-gradient(90deg,#111 20%,#111b),linear-gradient(135deg,#641019,#151515 70%)}
+.hero h1{font-size:45px}
+.hero p{color:#ddd;line-height:1.6}
 .red{background:#e50914;color:white}
-.search{padding:10px;border-radius:5px;border:1px solid #444;background:#222;color:white;width:220px}
 main{padding:25px 5%}
+.search-box{display:flex;gap:10px;margin:15px 0}
+.search{flex:1;min-width:0;padding:12px;border-radius:5px;border:1px solid #444;background:#222;color:white}
 .filters{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
 .filters button{background:#292929;color:white}
 .filters button.active{background:#e50914}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:20px}
-.movie{background:#1d1d1d;border-radius:8px;overflow:hidden;cursor:pointer;transition:.2s}
-.movie:hover{transform:scale(1.035)}
-.poster{height:225px;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;font-size:24px;font-weight:bold;background:linear-gradient(145deg,var(--c),#171717)}
+.movie{background:#1d1d1d;border-radius:8px;overflow:hidden}
+.poster{height:225px;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;font-size:22px;font-weight:bold;background:linear-gradient(145deg,var(--c),#171717);cursor:pointer}
 .info{padding:12px}
-.info h3{margin:0 0 8px;font-size:16px}
-.info p{color:#aaa;font-size:13px;margin:0}
-.info button{margin-top:10px;background:#333;color:white;padding:7px 10px}
-h2{margin-top:30px}
-.empty{color:#aaa;padding:30px 0}
-footer{text-align:center;color:#777;padding:35px}
+.info h3{font-size:16px}
+.info p{color:#aaa;font-size:13px}
+.info button{background:#333;color:white}
+.empty{color:#aaa;padding:20px}
 .modal{display:none;position:fixed;inset:0;background:#000e;z-index:10;align-items:center;justify-content:center;padding:20px}
 .modal.open{display:flex}
-.dialog{background:#222;padding:25px;border-radius:10px;max-width:500px;width:100%;position:relative}
-.close{position:absolute;right:12px;top:12px;background:#444;color:white}
-.dialog p{line-height:1.6;color:#ccc}
+.dialog{background:#222;padding:25px;border-radius:10px;max-width:650px;width:100%;max-height:90vh;overflow:auto;position:relative}
+.close{float:right;background:#444;color:white}
+video{width:100%;background:#000;border-radius:8px}
+footer{text-align:center;color:#777;padding:35px}
 @media(max-width:600px){
  header{padding:0 15px}nav{display:none}
- .hero{padding:55px 20px;min-height:300px}
- .hero h1{font-size:35px}
+ .hero{padding:45px 20px}
+ .hero h1{font-size:34px}
  main{padding:15px}
  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
- .poster{height:180px;font-size:20px}
- .search{width:100%}
+ .poster{height:180px;font-size:19px}
+ .search-box{width:100%}
 }
 </style>
 </head>
 <body>
 <header>
- <div class="logo">CineWave</div>
- <nav><a href="#home">Главная</a><a href="#catalog">Каталог</a><a href="#favorites">Избранное</a></nav>
+<div class="logo">CineWave</div>
+<nav><a href="#home">Главная</a><a href="#catalog">Каталог</a><a href="#favorites">Избранное</a></nav>
 </header>
 
 <section class="hero" id="home">
- <p>ТВОЙ МИР КИНО</p>
- <h1>Смотри. Мечтай.<br>Повторяй.</h1>
- <p>Открывай интересные фильмы и сериалы в своём бесплатном онлайн-кинотеатре.</p>
- <button class="red" onclick="document.getElementById('catalog').scrollIntoView()">Открыть каталог</button>
+<p>ТВОЙ МИР КИНО</p>
+<h1>Смотри. Мечтай.<br>Повторяй.</h1>
+<p>Открывай интересные фильмы и сериалы в бесплатном онлайн-кинотеатре.</p>
+<button class="red" onclick="document.getElementById('catalog').scrollIntoView()">Открыть каталог</button>
 </section>
 
 <main id="catalog">
- <h2>Каталог фильмов</h2>
- <div class="search-box">
-  <input class="search" id="search"
-  placeholder="Название фильма..."
-  onkeydown="if(event.key==='Enter') render()">
-
-  <button class="red" onclick="render()">Найти</button>
+<h2>Каталог фильмов</h2>
+<div class="search-box">
+<input class="search" id="search" placeholder="Название фильма..." onkeydown="if(event.key==='Enter')render()">
+<button class="red" onclick="render()">Найти</button>
 </div>
- <div class="filters" id="filters"></div>
- <div class="grid" id="movies"></div>
+<div class="filters" id="filters"></div>
+<div class="grid" id="movies"></div>
 
- <h2 id="favorites">Моё избранное ❤️</h2>
- <div class="grid" id="favoriteMovies"></div>
+<h2 id="favorites">Моё избранное ❤️</h2>
+<div class="grid" id="favoriteMovies"></div>
 
- <h2>Продолжить просмотр</h2>
- <div id="history" class="empty">Здесь появятся выбранные тобой фильмы.</div>
+<h2>Продолжить просмотр</h2>
+<div class="grid" id="history"></div>
 </main>
 
 <div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
- <div class="dialog">
-  <button class="close" onclick="closeModal()">✕</button>
-  <div id="details"></div>
- </div>
+<div class="dialog">
+<button class="close" onclick="closeModal()">Закрыть ✕</button>
+<div id="details"></div>
+</div>
 </div>
 
 <footer>CineWave © 2026 · Твой бесплатный кинотеатр</footer>
 
 <script>
 const films=[
- {id:1,title:"Космическое путешествие",year:2024,genre:"Фантастика",color:"#354e79",type:"Фильм",description:"История о путешествии к далёким звёздам."},
- {id:2,title:"Тайна старого города",year:2023,genre:"Детектив",color:"#79513d",type:"Фильм",description:"Загадка, которую предстоит разгадать."},
- {id:3,title:"Последний герой",year:2022,genre:"Боевик",color:"#873b32",type:"Фильм",description:"История о смелости и приключениях."},
- {id:4,title:"Мир животных",year:2024,genre:"Документальные",color:"#31634b",type:"Сериал",description:"Удивительная жизнь нашей планеты."},
- {id:5,title:"Смешные истории",year:2023,genre:"Комедия",color:"#8a6a30",type:"Сериал",description:"Лёгкие истории для хорошего настроения."},
- {id:6,title:"Ночь в музее",year:2021,genre:"Приключения",color:"#544078",type:"Фильм",description:"Невероятное приключение начинается ночью."},
- {id:7,title:"Будущее рядом",year:2025,genre:"Фантастика",color:"#28606b",type:"Сериал",description:"Мир технологий и новых открытий."},
- {id:8,title:"Секрет острова",year:2022,genre:"Детектив",color:"#49664a",type:"Фильм",description:"Остров хранит больше тайн, чем кажется."},
- {id:9,title:"Big Buck Bunny",year:2008,genre:"Мультфильм",color:"#39754b",type:"Фильм",description:"Знаменитый короткометражный анимационный фильм Blender Foundation.",video:"https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"}
+{id:1,title:"Космическое путешествие",year:2024,genre:"Фантастика",color:"#354e79",type:"Фильм",description:"История о путешествии к далёким звёздам."},
+{id:2,title:"Тайна старого города",year:2023,genre:"Детектив",color:"#79513d",type:"Фильм",description:"Загадка, которую предстоит разгадать."},
+{id:3,title:"Последний герой",year:2022,genre:"Боевик",color:"#873b32",type:"Фильм",description:"История о смелости и приключениях."},
+{id:4,title:"Мир животных",year:2024,genre:"Документальные",color:"#31634b",type:"Сериал",description:"Удивительная жизнь нашей планеты."},
+{id:5,title:"Смешные истории",year:2023,genre:"Комедия",color:"#8a6a30",type:"Сериал",description:"Лёгкие истории для хорошего настроения."},
+{id:6,title:"Ночь в музее",year:2021,genre:"Приключения",color:"#544078",type:"Фильм",description:"Невероятное приключение начинается ночью."},
+{id:7,title:"Будущее рядом",year:2025,genre:"Фантастика",color:"#28606b",type:"Сериал",description:"Мир технологий и новых открытий."},
+{id:8,title:"Секрет острова",year:2022,genre:"Детектив",color:"#49664a",type:"Фильм",description:"Остров хранит больше тайн, чем кажется."},
+{id:9,title:"Big Buck Bunny",year:2008,genre:"Мультфильм",color:"#39754b",type:"Фильм",description:"Анимационный фильм Blender Foundation.",video:"https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"}
 ];
+
 let favorites=JSON.parse(localStorage.getItem("cw_favorites")||"[]");
 let history=JSON.parse(localStorage.getItem("cw_history")||"[]");
 let genre="Все";
 
 const genres=["Все",...new Set(films.map(f=>f.genre))];
+
 document.getElementById("filters").innerHTML=genres.map(g=>
- `<button class="${g==="Все"?"active":""}" onclick="setGenre('${g}',this)">${g}</button>`
+`<button class="${g==="Все"?"active":""}" onclick="setGenre('${g}',this)">${g}</button>`
 ).join("");
 
 function setGenre(g,btn){
- genre=g;
- document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
- btn.classList.add("active");
- render();
+genre=g;
+document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+render();
 }
+
 function card(f){
- return `<article class="movie">
- <div class="poster" style="--c:${f.color}" onclick="openFilm(${f.id})">${f.title}</div>
- <div class="info"><h3>${f.title}</h3>
- <p>${f.year} · ${f.genre} · ${f.type}</p>
- <button onclick="toggleFavorite(${f.id})">${favorites.includes(f.id)?"❤️ В избранном":"♡ В избранное"}</button>
- </div></article>`;
+return `<article class="movie">
+<div class="poster" style="--c:${f.color}" onclick="openFilm(${f.id})">${f.title}</div>
+<div class="info">
+<h3>${f.title}</h3>
+<p>${f.year} · ${f.genre} · ${f.type}</p>
+<button onclick="toggleFavorite(${f.id})">${favorites.includes(f.id)?"❤️ В избранном":"♡ В избранное"}</button>
+</div></article>`;
 }
 
 function render(){
- const q=document.getElementById("search").value.trim().toLowerCase();
+const q=document.getElementById("search").value.trim().toLowerCase();
 
- const filtered=films.filter(f=>{
-   const title=f.title.toLowerCase();
-   const genreMatch=genre==="Все"||f.genre===genre;
-   const searchMatch=title.includes(q);
-   return genreMatch && searchMatch;
- });
+const filtered=films.filter(f=>
+(genre==="Все"||f.genre===genre)&&f.title.toLowerCase().includes(q)
+);
 
- document.getElementById("movies").innerHTML=
- filtered.map(card).join("") ||
- '<p class="empty">Фильмы не найдены. Попробуй другое название.</p>';
+document.getElementById("movies").innerHTML=
+filtered.map(card).join("")||
+'<p class="empty">Фильмы не найдены.</p>';
 
- document.getElementById("favoriteMovies").innerHTML=
- films.filter(f=>favorites.includes(f.id)).map(card).join("") ||
- '<p class="empty">Пока нет избранного.</p>';
+document.getElementById("favoriteMovies").innerHTML=
+films.filter(f=>favorites.includes(f.id)).map(card).join("")||
+'<p class="empty">Пока нет избранного.</p>';
 
- document.getElementById("history").innerHTML=
- history.length
- ? films.filter(f=>history.includes(f.id)).map(card).join("")
- : 'Здесь появятся выбранные тобой фильмы.';
+document.getElementById("history").innerHTML=
+films.filter(f=>history.includes(f.id)).map(card).join("")||
+'<p class="empty">История просмотра пока пуста.</p>';
 }
 
 function toggleFavorite(id){
- favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
- localStorage.setItem("cw_favorites",JSON.stringify(favorites));render();
+favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
+localStorage.setItem("cw_favorites",JSON.stringify(favorites));
+render();
 }
 
 function openFilm(id){
- const f=films.find(x=>x.id===id);
- history=[id,...history.filter(x=>x!==id)];
- localStorage.setItem("cw_history",JSON.stringify(history));
+const f=films.find(x=>x.id===id);
+history=[id,...history.filter(x=>x!==id)];
+localStorage.setItem("cw_history",JSON.stringify(history));
 
- document.getElementById("details").innerHTML=`
- <h2>${f.title}</h2>
- <p>${f.year} · ${f.genre} · ${f.type}</p>
- <p>${f.description}</p>
- ${f.video ? `
- <video controls playsinline preload="metadata"
- style="width:100%;border-radius:8px;background:#000">
- <source src="${f.video}" type="video/mp4">
- Ваш браузер не поддерживает видео.
- </video>
- <p style="color:#aaa;font-size:12px">
- Источник: Blender Foundation · Big Buck Bunny · CC BY 3.0
- </p>
- ` : `
- <p>Видео пока не подключено. Скоро здесь появится легальный источник.</p>
- `}
- <button class="red" onclick="toggleFavorite(${id})">
- ♡ В избранное
- </button>`;
+document.getElementById("details").innerHTML=`
+<h2>${f.title}</h2>
+<p>${f.year} · ${f.genre} · ${f.type}</p>
+<p>${f.description}</p>
+${f.video?`
+<video controls playsinline preload="metadata">
+<source src="${f.video}" type="video/mp4">
+Ваш браузер не поддерживает видео.
+</video>
+<p style="color:#aaa;font-size:12px">Источник: Blender Foundation · Big Buck Bunny · CC BY 3.0</p>
+`:`<p>Видео пока не подключено. Мы добавим легальный источник позже.</p>`}
+<button class="red" onclick="toggleFavorite(${id})">♡ В избранное</button>`;
 
- document.getElementById("modal").classList.add("open");
- render();
+document.getElementById("modal").classList.add("open");
+render();
 }
 
+function closeModal(){
+document.getElementById("modal").classList.remove("open");
 }
-function closeModal(){document.getElementById("modal").classList.remove("open")}
+
 render();
 </script>
 </body>
