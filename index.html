@@ -6,6 +6,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CineWave — Твой мир кино</title>
 <style>
+ .search-box {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.search-box .search {
+  flex: 1;
+  width: auto;
+}
+
+.search-box button {
+  background: #e50914;
+  color: white;
+}
+
+@media(max-width:600px) {
+  .search-box {
+    width: 100%;
+  }
+}
 *{box-sizing:border-box}
 body{margin:0;background:#101010;color:white;font-family:Arial,sans-serif}
 header{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:#090909;position:sticky;top:0;z-index:5}
@@ -63,7 +84,13 @@ footer{text-align:center;color:#777;padding:35px}
 
 <main id="catalog">
  <h2>Каталог фильмов</h2>
- <input class="search" id="search" placeholder="🔍 Найти фильм..." oninput="render()">
+ <div class="search-box">
+  <input class="search" id="search"
+  placeholder="Название фильма..."
+  onkeydown="if(event.key==='Enter') render()">
+
+  <button class="red" onclick="render()">Найти</button>
+</div>
  <div class="filters" id="filters"></div>
  <div class="grid" id="movies"></div>
 
