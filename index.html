@@ -105,9 +105,9 @@ footer{text-align:center;color:#777;padding:35px}
     Найти
   </button>
 
-  <button class="red" onclick="searchArchive()">
-    Найти онлайн-видео
-  </button>
+  <button class="red" onclick="alert('Поиск онлайн-видео скоро появится!')">
+  Найти онлайн-видео
+</button>
 </div>
 
 <div class="filters" id="filters"></div>
@@ -174,9 +174,9 @@ const films=[
   color:"#53647d",
   type:"Фильм",
   description:"Фантастический анимационный фильм с открытой лицензией.",
-  video:"https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4",
+  video:"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
   qualities:{
-    "Стандартное":"https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4"
+    "Стандартное":"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
   },
   audioTracks:{}
  }
@@ -323,16 +323,7 @@ function openFilm(id){
   const video = document.getElementById("cineVideo");
   const qualitySelect = document.getElementById("qualitySelect");
   const audioSelect = document.getElementById("audioSelect");
- // Автоматический запуск фильма
-if (video) {
-  video.play().catch(error => {
-    console.log("Нажмите Play для запуска фильма:", error);
-  });
-
-  video.addEventListener("error", () => {
-    console.error("Не удалось загрузить видео");
-  });
-}
+ 
 
   if (video && qualitySelect) {
     qualitySelect.addEventListener("change", () => {
