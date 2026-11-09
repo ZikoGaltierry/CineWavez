@@ -166,6 +166,20 @@ const films=[
   audioTracks:{}
  }
 ];
+ {
+  id:10,
+  title:"Elephants Dream",
+  year:2006,
+  genre:"Фантастика",
+  color:"#53647d",
+  type:"Фильм",
+  description:"Фантастический анимационный фильм с открытой лицензией.",
+  video:"https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4",
+  qualities:{
+    "Стандартное":"https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4"
+  },
+  audioTracks:{}
+}
 
 
 let favorites=JSON.parse(localStorage.getItem("cw_favorites")||"[]");
@@ -308,6 +322,16 @@ function openFilm(id){
   const video = document.getElementById("cineVideo");
   const qualitySelect = document.getElementById("qualitySelect");
   const audioSelect = document.getElementById("audioSelect");
+ // Автоматический запуск фильма
+if (video) {
+  video.play().catch(error => {
+    console.log("Нажмите Play для запуска фильма:", error);
+  });
+
+  video.addEventListener("error", () => {
+    console.error("Не удалось загрузить видео");
+  });
+}
 
   if (video && qualitySelect) {
     qualitySelect.addEventListener("change", () => {
