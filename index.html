@@ -92,12 +92,29 @@ footer{text-align:center;color:#777;padding:35px}
 
 <main id="catalog">
 <h2>Каталог фильмов</h2>
+
 <div class="search-box">
-<input class="search" id="search" placeholder="Название фильма..." onkeydown="if(event.key==='Enter')render()">
-<button class="red" onclick="render()">Найти</button>
+  <input
+    class="search"
+    id="search"
+    placeholder="Название фильма..."
+    onkeydown="if(event.key==='Enter')render()"
+  >
+
+  <button class="red" onclick="render()">
+    Найти
+  </button>
+
+  <button class="red" onclick="searchArchive()">
+    Найти онлайн-видео
+  </button>
 </div>
+
 <div class="filters" id="filters"></div>
 <div class="grid" id="movies"></div>
+<h2>Бесплатное онлайн-видео</h2>
+<div class="grid" id="archiveResults"></div>
+
 
 <h2 id="favorites">Моё избранное ❤️</h2>
 <div class="grid" id="favoriteMovies"></div>
@@ -380,7 +397,7 @@ render();
 
 loadTMDB("movie");
 loadTMDB("tv");
-
+  
 </script>
 </body>
 </html>
