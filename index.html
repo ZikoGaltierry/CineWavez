@@ -145,13 +145,31 @@ function card(f){
  <button onclick="toggleFavorite(${f.id})">${favorites.includes(f.id)?"❤️ В избранном":"♡ В избранное"}</button>
  </div></article>`;
 }
+
 function render(){
- const q=document.getElementById("search").value.toLowerCase();
- const filtered=films.filter(f=>(genre==="Все"||f.genre===genre)&&f.title.toLowerCase().includes(q));
- document.getElementById("movies").innerHTML=filtered.map(card).join("")||'<p class="empty">Ничего не найдено.</p>';
- document.getElementById("favoriteMovies").innerHTML=films.filter(f=>favorites.includes(f.id)).map(card).join("")||'<p class="empty">Пока нет избранного.</p>';
- document.getElementById("history").innerHTML=history.length?films.filter(f=>history.includes(f.id)).map(card).join(""):'Здесь появятся выбранные тобой фильмы.';
+ const q=document.getElementById("search").value.trim().toLowerCase();
+
+ const filtered=films.filter(f=>{
+   const title=f.title.toLowerCase();
+   const genreMatch=genre==="Все"||f.genre===genre;
+   const searchMatch=title.includes(q);
+   return genreMatch && searchMatch;
+ });
+
+ document.getElementById("movies").innerHTML=
+ filtered.map(card).join("") ||
+ '<p class="empty">Фильмы не найдены. Попробуй другое название.</p>';
+
+ document.getElementById("favoriteMovies").innerHTML=
+ films.filter(f=>favorites.includes(f.id)).map(card).join("") ||
+ '<p class="empty">Пока нет избранного.</p>';
+
+ document.getElementById("history").innerHTML=
+ history.length
+ ? films.filter(f=>history.includes(f.id)).map(card).join("")
+ : 'Здесь появятся выбранные тобой фильмы.';
 }
+
 function toggleFavorite(id){
  favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
  localStorage.setItem("cw_favorites",JSON.stringify(favorites));render();
