@@ -7,6 +7,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CineWave</title>
 <style>
+ 
+.player-settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.player-settings label {
+  color: #aaa;
+  font-size: 13px;
+}
+
+.player-settings select {
+  width: 100%;
+  background: #252525;
+  color: white;
+  border: 1px solid #555;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+@media(max-width:500px) {
+  .player-settings {
+    grid-template-columns: 1fr;
+  }
+}
+
 *{box-sizing:border-box}
 body{margin:0;background:#101010;color:white;font-family:Arial,sans-serif}
 header{height:70px;display:flex;align-items:center;padding:0 5%;background:#090909;position:sticky;top:0;z-index:5}
@@ -88,17 +116,40 @@ footer{text-align:center;color:#777;padding:35px}
 <footer>CineWave © 2026 · Твой бесплатный кинотеатр</footer>
 
 <script>
+
 const films=[
-{id:1,title:"Космическое путешествие",year:2024,genre:"Фантастика",color:"#354e79",type:"Фильм",description:"История о путешествии к далёким звёздам."},
-{id:2,title:"Тайна старого города",year:2023,genre:"Детектив",color:"#79513d",type:"Фильм",description:"Загадка, которую предстоит разгадать."},
-{id:3,title:"Последний герой",year:2022,genre:"Боевик",color:"#873b32",type:"Фильм",description:"История о смелости и приключениях."},
-{id:4,title:"Мир животных",year:2024,genre:"Документальные",color:"#31634b",type:"Сериал",description:"Удивительная жизнь нашей планеты."},
-{id:5,title:"Смешные истории",year:2023,genre:"Комедия",color:"#8a6a30",type:"Сериал",description:"Лёгкие истории для хорошего настроения."},
-{id:6,title:"Ночь в музее",year:2021,genre:"Приключения",color:"#544078",type:"Фильм",description:"Невероятное приключение начинается ночью."},
-{id:7,title:"Будущее рядом",year:2025,genre:"Фантастика",color:"#28606b",type:"Сериал",description:"Мир технологий и новых открытий."},
-{id:8,title:"Секрет острова",year:2022,genre:"Детектив",color:"#49664a",type:"Фильм",description:"Остров хранит больше тайн, чем кажется."},
-{id:9,title:"Big Buck Bunny",year:2008,genre:"Мультфильм",color:"#39754b",type:"Фильм",description:"Анимационный фильм Blender Foundation.",video:"https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"}
+ {id:1,title:"Космическое путешествие",year:2024,genre:"Фантастика",color:"#354e79",type:"Фильм",description:"История о путешествии к далёким звёздам."},
+
+ {id:2,title:"Тайна старого города",year:2023,genre:"Детектив",color:"#79513d",type:"Фильм",description:"Загадка, которую предстоит разгадать."},
+
+ {id:3,title:"Последний герой",year:2022,genre:"Боевик",color:"#873b32",type:"Фильм",description:"История о смелости и приключениях."},
+
+ {id:4,title:"Мир животных",year:2024,genre:"Документальные",color:"#31634b",type:"Сериал",description:"Удивительная жизнь нашей планеты."},
+
+ {id:5,title:"Смешные истории",year:2023,genre:"Комедия",color:"#8a6a30",type:"Сериал",description:"Лёгкие истории для хорошего настроения."},
+
+ {id:6,title:"Ночь в музее",year:2021,genre:"Приключения",color:"#544078",type:"Фильм",description:"Невероятное приключение начинается ночью."},
+
+ {id:7,title:"Будущее рядом",year:2025,genre:"Фантастика",color:"#28606b",type:"Сериал",description:"Мир технологий и новых открытий."},
+
+ {id:8,title:"Секрет острова",year:2022,genre:"Детектив",color:"#49664a",type:"Фильм",description:"Остров хранит больше тайн, чем кажется."},
+
+ {
+  id:9,
+  title:"Big Buck Bunny",
+  year:2008,
+  genre:"Мультфильм",
+  color:"#39754b",
+  type:"Фильм",
+  description:"Анимационный фильм Blender Foundation.",
+  video:"https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4",
+  qualities:{
+    "480p":"https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
+  },
+  audioTracks:{}
+ }
 ];
+
 
 let favorites=JSON.parse(localStorage.getItem("cw_favorites")||"[]");
 let history=JSON.parse(localStorage.getItem("cw_history")||"[]");
@@ -179,30 +230,56 @@ function toggleFavorite(id){
 }
 
  
+
 function openFilm(id){
   const f = films.find(x => String(x.id) === String(id));
-
-  if (!f) {
-    alert("Фильм не найден");
-    return;
-  }
+  if (!f) return;
 
   history = [f.id, ...history.filter(x => String(x) !== String(f.id))];
   localStorage.setItem("cw_history", JSON.stringify(history));
 
+  const qualities = f.qualities || {};
+  const availableQualities = Object.keys(qualities);
+
+  const audioTracks = f.audioTracks || {};
+
   document.getElementById("details").innerHTML = `
     <h2>${f.title}</h2>
     <p>${f.year} · ${f.genre} · ${f.type}</p>
-    ${f.poster ? `<img src="${f.poster}" style="width:100%;max-height:350px;object-fit:contain">` : ""}
-    <p>${f.description || "Описание отсутствует"}</p>
+
+    ${f.poster ? `<img src="${f.poster}" style="width:100%;max-height:250px;object-fit:contain">` : ""}
 
     ${f.video ? `
-      <video controls playsinline style="width:100%">
+      <video id="cineVideo" controls playsinline
+        style="width:100%;background:#000;border-radius:8px">
         <source src="${f.video}" type="video/mp4">
       </video>
+
+      <div class="player-settings">
+        <label>Качество видео</label>
+        <select id="qualitySelect">
+          <option value="default">Стандартное</option>
+          ${availableQualities.map(q =>
+            `<option value="${q}">${q}</option>`
+          ).join("")}
+        </select>
+
+        <label>Озвучка</label>
+        <select id="audioSelect">
+          <option value="default">Стандартная</option>
+          ${Object.keys(audioTracks).map(a =>
+            `<option value="${a}">${a}</option>`
+          ).join("")}
+        </select>
+      </div>
     ` : `
-      <p>Видео пока недоступно. Мы добавим легальный источник просмотра.</p>
+      <div class="player-empty">
+        <h3>Видео пока недоступно</h3>
+        <p>Для фильма ещё не подключён видеопоток.</p>
+      </div>
     `}
+
+    <p>${f.description || ""}</p>
 
     <button class="red" onclick="toggleFavorite('${f.id}')">
       ${favorites.includes(f.id) ? "❤️ В избранном" : "♡ В избранное"}
@@ -210,8 +287,52 @@ function openFilm(id){
   `;
 
   document.getElementById("modal").classList.add("open");
+
+  const video = document.getElementById("cineVideo");
+  const qualitySelect = document.getElementById("qualitySelect");
+  const audioSelect = document.getElementById("audioSelect");
+
+  if (video && qualitySelect) {
+    qualitySelect.addEventListener("change", () => {
+      const selected = qualitySelect.value;
+      if (selected === "default") return;
+
+      const wasPlaying = !video.paused;
+      const currentTime = video.currentTime;
+
+      video.src = qualities[selected];
+      video.load();
+
+      video.addEventListener("loadedmetadata", function restore(){
+        video.currentTime = Math.min(currentTime, video.duration || 0);
+        if (wasPlaying) video.play();
+        video.removeEventListener("loadedmetadata", restore);
+      });
+    });
+  }
+
+  if (video && audioSelect) {
+    audioSelect.addEventListener("change", () => {
+      const selected = audioSelect.value;
+      if (selected === "default") return;
+
+      const wasPlaying = !video.paused;
+      const currentTime = video.currentTime;
+
+      video.src = audioTracks[selected];
+      video.load();
+
+      video.addEventListener("loadedmetadata", function restore(){
+        video.currentTime = Math.min(currentTime, video.duration || 0);
+        if (wasPlaying) video.play();
+        video.removeEventListener("loadedmetadata", restore);
+      });
+    });
+  }
+
   render();
 }
+
 
 
 function closeModal(){
