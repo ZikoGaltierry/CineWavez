@@ -118,20 +118,22 @@ render();
 }
 
 
+
 function card(f){
-return `<article class="movie">
-<div class="poster" style="--c:${f.color};${f.poster ? `background-image:url('${f.poster}');background-size:cover;background-position:center` : ''}" onclick="openFilm('${f.id}')">
-${f.poster ? '' : f.title}
-</div>
-<div class="info">
-<h3>${f.title}</h3>
-<p>${f.year} · ${f.genre} · ${f.type}</p>
-<button onclick="toggleFavorite('${f.id}')">
-${favorites.includes(f.id)?"❤️ В избранном":"♡ В избранное"}
-</button>
-</div>
+return `<article class="movie" onclick="openFilm('${f.id}')" style="cursor:pointer">
+  <div class="poster" style="--c:${f.color};${f.poster ? `background-image:url('${f.poster}');background-size:cover;background-position:center` : ''}">
+    ${f.poster ? '' : f.title}
+  </div>
+  <div class="info">
+    <h3>${f.title}</h3>
+    <p>${f.year} · ${f.genre} · ${f.type}</p>
+    <button onclick="event.stopPropagation();toggleFavorite('${f.id}')">
+      ${favorites.includes(f.id)?"❤️ В избранном":"♡ В избранное"}
+    </button>
+  </div>
 </article>`;
 }
+
 
 
 
@@ -173,6 +175,41 @@ function toggleFavorite(id){
 
   localStorage.setItem("cw_favorites", JSON.stringify(favorites));
 
+  render();
+}
+
+ 
+function openFilm(id){
+  const f = films.find(x => String(x.id) === String(id));
+
+  if (!f) {
+    alert("Фильм не найден");
+    return;
+  }
+
+  history = [f.id, ...history.filter(x => String(x) !== String(f.id))];
+  localStorage.setItem("cw_history", JSON.stringify(history));
+
+  document.getElementById("details").innerHTML = `
+    <h2>${f.title}</h2>
+    <p>${f.year} · ${f.genre} · ${f.type}</p>
+    ${f.poster ? `<img src="${f.poster}" style="width:100%;max-height:350px;object-fit:contain">` : ""}
+    <p>${f.description || "Описание отсутствует"}</p>
+
+    ${f.video ? `
+      <video controls playsinline style="width:100%">
+        <source src="${f.video}" type="video/mp4">
+      </video>
+    ` : `
+      <p>Видео пока недоступно. Мы добавим легальный источник просмотра.</p>
+    `}
+
+    <button class="red" onclick="toggleFavorite('${f.id}')">
+      ${favorites.includes(f.id) ? "❤️ В избранном" : "♡ В избранное"}
+    </button>
+  `;
+
+  document.getElementById("modal").classList.add("open");
   render();
 }
 
