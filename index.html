@@ -129,17 +129,36 @@ function toggleFavorite(id){
  favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
  localStorage.setItem("cw_favorites",JSON.stringify(favorites));render();
 }
+
 function openFilm(id){
  const f=films.find(x=>x.id===id);
  history=[id,...history.filter(x=>x!==id)];
  localStorage.setItem("cw_history",JSON.stringify(history));
+
  document.getElementById("details").innerHTML=`
- <h2>${f.title}</h2><p>${f.year} · ${f.genre} · ${f.type}</p>
+ <h2>${f.title}</h2>
+ <p>${f.year} · ${f.genre} · ${f.type}</p>
  <p>${f.description}</p>
- <p>Это демонстрационная карточка каталога. Видео пока не подключено. Позже сюда можно добавить фильм из легального источника.</p>
- <button class="red" onclick="toggleFavorite(${id})">♡ Избранное</button>`;
+ ${f.video ? `
+ <video controls playsinline preload="metadata"
+ style="width:100%;border-radius:8px;background:#000">
+ <source src="${f.video}" type="video/mp4">
+ Ваш браузер не поддерживает видео.
+ </video>
+ <p style="color:#aaa;font-size:12px">
+ Источник: Blender Foundation · Big Buck Bunny · CC BY 3.0
+ </p>
+ ` : `
+ <p>Видео пока не подключено. Скоро здесь появится легальный источник.</p>
+ `}
+ <button class="red" onclick="toggleFavorite(${id})">
+ ♡ В избранное
+ </button>`;
+
  document.getElementById("modal").classList.add("open");
  render();
+}
+
 }
 function closeModal(){document.getElementById("modal").classList.remove("open")}
 render();
