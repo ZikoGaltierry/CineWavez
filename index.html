@@ -117,69 +117,70 @@ btn.classList.add("active");
 render();
 }
 
+
 function card(f){
 return `<article class="movie">
-<div class="poster" style="--c:${f.color}" onclick="openFilm(${f.id})">${f.title}</div>
+<div class="poster" style="--c:${f.color};${f.poster ? `background-image:url('${f.poster}');background-size:cover;background-position:center` : ''}" onclick="openFilm('${f.id}')">
+${f.poster ? '' : f.title}
+</div>
 <div class="info">
 <h3>${f.title}</h3>
 <p>${f.year} · ${f.genre} · ${f.type}</p>
-<button onclick="toggleFavorite(${f.id})">${favorites.includes(f.id)?"❤️ В избранном":"♡ В избранное"}</button>
-</div></article>`;
+<button onclick="toggleFavorite('${f.id}')">
+${favorites.includes(f.id)?"❤️ В избранном":"♡ В избранное"}
+</button>
+</div>
+</article>`;
 }
+
+
 
 function render(){
-const q=document.getElementById("search").value.trim().toLowerCase();
+  const q = document.getElementById("search").value.trim().toLowerCase();
 
-const filtered=films.filter(f=>
-(genre==="Все"||f.genre===genre)&&f.title.toLowerCase().includes(q)
-);
+  const filtered = films.filter(f => {
+    const genreMatch = genre === "Все" || f.genre === genre;
+    const searchMatch =
+      f.title.toLowerCase().includes(q) ||
+      (f.description || "").toLowerCase().includes(q);
 
-document.getElementById("movies").innerHTML=
-filtered.map(card).join("")||
-'<p class="empty">Фильмы не найдены.</p>';
+    return genreMatch && searchMatch;
+  });
 
-document.getElementById("favoriteMovies").innerHTML=
-films.filter(f=>favorites.includes(f.id)).map(card).join("")||
-'<p class="empty">Пока нет избранного.</p>';
+  document.getElementById("movies").innerHTML =
+    filtered.map(card).join("") ||
+    '<p class="empty">Фильмы не найдены.</p>';
 
-document.getElementById("history").innerHTML=
-films.filter(f=>history.includes(f.id)).map(card).join("")||
-'<p class="empty">История просмотра пока пуста.</p>';
+  document.getElementById("favoriteMovies").innerHTML =
+    films.filter(f => favorites.includes(f.id)).map(card).join("") ||
+    '<p class="empty">Пока нет избранного.</p>';
+
+  document.getElementById("history").innerHTML =
+    films.filter(f => history.includes(f.id)).map(card).join("") ||
+    '<p class="empty">История просмотра пока пуста.</p>';
 }
+
+
 
 function toggleFavorite(id){
-favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
-localStorage.setItem("cw_favorites",JSON.stringify(favorites));
-render();
+  id = String(id);
+
+  favorites = favorites.map(String);
+
+  favorites = favorites.includes(id)
+    ? favorites.filter(x => x !== id)
+    : [...favorites, id];
+
+  localStorage.setItem("cw_favorites", JSON.stringify(favorites));
+
+  render();
 }
 
-function openFilm(id){
-const f=films.find(x=>x.id===id);
-history=[id,...history.filter(x=>x!==id)];
-localStorage.setItem("cw_history",JSON.stringify(history));
-
-document.getElementById("details").innerHTML=`
-<h2>${f.title}</h2>
-<p>${f.year} · ${f.genre} · ${f.type}</p>
-<p>${f.description}</p>
-${f.video?`
-<video controls playsinline preload="metadata">
-<source src="${f.video}" type="video/mp4">
-Ваш браузер не поддерживает видео.
-</video>
-<p style="color:#aaa;font-size:12px">Источник: Blender Foundation · Big Buck Bunny · CC BY 3.0</p>
-`:`<p>Видео пока не подключено. Мы добавим легальный источник позже.</p>`}
-<button class="red" onclick="toggleFavorite(${id})">♡ В избранное</button>`;
-
-document.getElementById("modal").classList.add("open");
-render();
-}
 
 function closeModal(){
 document.getElementById("modal").classList.remove("open");
 }
 
-render();
  
 const TMDB_KEY = "acf087f1cc4ac1ad027a2563a2e6c4e0";
 
@@ -206,8 +207,13 @@ async function loadTMDB(type = "movie") {
         : ""
     }));
 
-    films.push(...newFilms);
-    render();
+    newFilms.forEach(f => {
+  if (!films.some(existing => existing.id === f.id)) {
+    films.push(f);
+  }
+});
+
+render();
 
   } catch (error) {
     console.error("Ошибка загрузки TMDB:", error);
