@@ -6,7 +6,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CineWave</title>
+
 <style>
+
+.youtube-player {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.youtube-player iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+</style>
  
 .player-settings {
   display: grid;
@@ -281,37 +299,29 @@ function openFilm(id){
 
     ${f.poster ? `<img src="${f.poster}" style="width:100%;max-height:250px;object-fit:contain">` : ""}
 
-    ${f.video ? `
-      <video id="cineVideo" controls playsinline
-        style="width:100%;background:#000;border-radius:8px">
-        <source src="${f.video}" type="video/mp4">
-      </video>
-
-      <div class="player-settings">
-        <label>Качество видео</label>
-        <select id="qualitySelect">
-          <option value="default">Стандартное</option>
-          ${availableQualities.map(q =>
-            `<option value="${q}">${q}</option>`
-          ).join("")}
-        </select>
-
-        <label>Озвучка</label>
-        <select id="audioSelect">
-          <option value="default">Стандартная</option>
-          ${Object.keys(audioTracks).map(a =>
-            `<option value="${a}">${a}</option>`
-          ).join("")}
-        </select>
-      </div>
-    ` : `
-      <div class="player-empty">
-        <h3>Видео пока недоступно</h3>
-        <p>Для фильма ещё не подключён видеопоток.</p>
-      </div>
-    `}
-
-    <p>${f.description || ""}</p>
+    ${f.youtubeId ? `
+  <div class="youtube-player">
+    <iframe
+      src="https://www.youtube-nocookie.com/embed/${f.youtubeId}"
+      title="${f.title}"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <p style="color:#aaa;font-size:12px">
+    Лицензия: ${f.license}
+  </p>
+` : f.video ? `
+  <video id="cineVideo" controls playsinline>
+    <source src="${f.video}" type="video/mp4">
+  </video>
+` : `
+  <div class="player-empty">
+    <h3>Видео пока недоступно</h3>
+    <p>Для фильма ещё не подключён видеопоток.</p>
+  </div>
+`}
 
     <button class="red" onclick="toggleFavorite('${f.id}')">
       ${favorites.includes(f.id) ? "❤️ В избранном" : "♡ В избранное"}
